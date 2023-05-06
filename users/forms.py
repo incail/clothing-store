@@ -1,7 +1,13 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
-from django import forms
+import uuid
+from datetime import timedelta
 
-from users.models import User
+from django import forms
+from django.contrib.auth.forms import (AuthenticationForm, UserChangeForm,
+                                       UserCreationForm)
+from django.core.exceptions import ValidationError
+from django.utils.timezone import now
+
+from .models import EmailVerification, User
 
 
 class UserLoginForm(AuthenticationForm):
@@ -18,6 +24,16 @@ class UserLoginForm(AuthenticationForm):
             'username',
             'password',
         ]
+
+    def confirm_login_allowed(self, user):
+        if user.is_verified_email:
+            super().confirm_login_allowed(user)
+        else:
+            self.error_messages = {'is_verified_email': 'подтвердите адрес электронной почты для входа в систему'}
+            raise ValidationError(
+                self.error_messages['is_verified_email'],
+                code='is_verified_email'
+            )
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -50,6 +66,13 @@ class UserRegistrationForm(UserCreationForm):
             'password1',
             'password2',
         ]
+
+    def save(self, commit=True):
+        user = super().save(commit=True)
+        expiration = now() + timedelta(hours=48)
+        record = EmailVerification.objects.create(code=uuid.uuid4(), user=user, expiration=expiration)
+        record.send_verification_email()
+        return user
 
 
 class UserProfileForm(UserChangeForm):
