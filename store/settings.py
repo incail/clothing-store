@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DOMAIN_NAME = 'http://localhost:8000'
+DOMAIN_NAME = 'http://127.0.0.1:8000'
 
 
 # Application definition
@@ -41,13 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'django.contrib.sites',
+    'django.contrib.humanize',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
 
+    'debug_toolbar',
+
     'users',
+    'orders',
     'products',
 ]
 
@@ -59,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'store.urls'
@@ -74,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
                 'products.context_processors.baskets',
             ],
         },
@@ -82,6 +89,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'store.wsgi.application'
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'localhost',
+]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -156,12 +177,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Sending email
 
-# EMAIL_HOST = 'smtp.yandex.com'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'storeclocth@yandex.by'
-# EMAIL_HOST_PASSWORD = 'mgqezlysmxxfknxu'
-# EMAIL_USE_SSL = True
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'storeclocth@yandex.by'
+EMAIL_HOST_PASSWORD = 'mgqezlysmxxfknxu'
+EMAIL_USE_SSL = True
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Allauth
 
@@ -180,3 +201,14 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
+
+# Celery Configuration Options
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+
+# Stripe
+
+STRIPE_PUBLIC_KEY = 'pk_test_51ND6EPAYFC9QPyfkik0n0Qfv1iXdj1CrY2dSw7f4VdE22mmpEpVr3YKRkcK1sUG7QIUd9dALJuORGnk5DARW3Pr900qhypvs7x'
+STRIPE_SECRET_KEY = 'sk_test_51ND6EPAYFC9QPyfk7fmIrZ0xz3Dup6WajVSt7p7M8ukR1ODDcxM6HjANOlOv72bWPd3gSsfvG8NsiDBxl4F1uuTV007jmF3nwP'
+STRIPE_WEBHOOK_SECRET = 'whsec_aea79613f00042732ebe7add2dcdeb7f0f1422dbe8d58eb582c82d04f783b2e9'

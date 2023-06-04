@@ -26,6 +26,7 @@ class ProductsListView(TitleMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = ProductCategory.objects.all()
+        context['categories_id'] = self.kwargs.get('category_id')
         return context
 
 
