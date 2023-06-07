@@ -16,8 +16,8 @@ The project implements applications
 - users - responsible for authorization, registration, email confirmation, working with the shopping cart, profile display
 - orders - ability to pay for goods
 
-Celery is used to send a message to the client's email
-Redis is used for caching product cards
+<p>Celery is used to send a message to the client's email</p>
+<p>Redis is used for caching product cards</p>
 
 ## Stakc
 - Python
@@ -29,23 +29,23 @@ Redis is used for caching product cards
 All actions should be executed from the source directory of the project and only after installing all requirements.
 
 1. Firstly, create and activate a new virtual environment:
-      python3.9 -m venv ../venv
-      source ../venv/bin/activate
+     <p>python3.9 -m venv ../venv</p>
+     <p>source ../venv/bin/activate</p>
       
 2. Install packages:
-      pip install --upgrade pip
-      pip install -r requirements.txt
+      <p>pip install --upgrade pip</p>
+      <p>pip install -r requirements.txt</p>
 
 3. Run project dependencies, migrations, fill the database with the fixture data etc.:
-      ./manage.py migrate
-      ./manage.py loaddata <path_to_fixture_files>
-      ./manage.py runserver 
+      <p>./manage.py migrate</p>
+      <p>./manage.py loaddata <path_to_fixture_files></p>
+      <p>./manage.py runserver</p>
       
 4. Run Redis Server:
-      redis-server
+      <p>redis-server</p>
       
 5. Run Celery:
-      celery -A store worker --loglevel=INFO
+      <p>celery -A store worker --loglevel=INFO</p>
 
 ## Distribute
 
