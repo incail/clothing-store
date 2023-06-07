@@ -7,11 +7,11 @@
    <img src="https://img.shields.io/badge/Django-3.2.13-blue" alt="Django Version">
    <img src="https://img.shields.io/badge/License-No-green" alt="License">
 </p>
+The project for study Django.
 
 ## About
 
-The project for study Django.
-The project implements applications
+The project implements applications:
 - products - which is responsible for working with products
 - users - responsible for authorization, registration, email confirmation, working with the shopping cart, profile display
 - orders - ability to pay for goods
@@ -55,5 +55,3 @@ All actions should be executed from the source directory of the project and only
 ## Developers
 
 - [incail](https://github.com/incail)
-
-## License
