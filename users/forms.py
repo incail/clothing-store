@@ -7,7 +7,6 @@ from .models import User
 from .tasks import send_email_verification
 
 
-
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control py-4', 'placeholder': 'Введите имя пользователя'
